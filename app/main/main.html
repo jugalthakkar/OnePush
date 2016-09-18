@@ -1,6 +1,6 @@
 <div class="box">
     <div class="box-row header">
-        
+
         <div class="navbar navbar-info navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -11,20 +11,20 @@
                     </button>
                     <a class="navbar-brand" href="http://jugal.me/1push">OnePush</a>
                 </div>
-                <div class="navbar-collapse collapse navbar-inverse-collapse">
-                    <form class="navbar-form navbar-right">
-                        <div class="form-group">
-                            <input type="text" class="form-control col-md-8" ng-focus="startSearch()" ng-blur="stopSearch()" ng-model="query" placeholder="Search">
-                            <div class="btn-group-vertical auto-complete  hidden-xs" ng-show="searching && query.length>0">
-                                <button type="button" class="btn btn-info" ng-repeat="website in websites|filter:{title:query}" ng-bind="website.title" ng-click="setQuery(website.title);stopSearch();"></button>
-                                <button type="button" class="btn btn-info" ng-repeat="website in websites|filter:{url_address:query}" ng-bind="website.url_address" ng-click="setQuery(website.url_address);stopSearch();"></button>
-                            </div>
+
+                <form class="navbar-form navbar-right navbar-collapse collapse navbar-inverse-collapse">
+                    <div class="form-group">
+                        <input type="text" class="form-control col-md-8" ng-focus="startSearch()" ng-blur="stopSearch()" ng-model="query" placeholder="Search">
+                        <div class="btn-group-vertical auto-complete  hidden-xs" ng-show="searching && query.length>0">
+                            <button type="button" class="btn btn-info" ng-repeat="website in websites|filter:{title:query}" ng-bind="website.title" ng-click="setQuery(website.title);stopSearch();"></button>
+                            <button type="button" class="btn btn-info" ng-repeat="website in websites|filter:{url_address:query}" ng-bind="website.url_address" ng-click="setQuery(website.url_address);stopSearch();"></button>
                         </div>
-                        <span class="nav-item hidden-xs" ng-show="query.length>0">
-                            <span class="clear-search nav-link" ng-click="query=''">x</span>
-                        </span>
-                    </form>
-                </div>
+                    </div>
+                    <span class="nav-item hidden-xs" ng-show="query.length>0">
+                        <span class="clear-search nav-link" ng-click="query=''">x</span>
+                    </span>
+                </form>
+
             </div>
         </div>
         <div class="summary">
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        
+
 
     </div>
     <div class="box-row content">

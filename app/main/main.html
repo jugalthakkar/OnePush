@@ -1,35 +1,43 @@
 <div class="box">
     <div class="box-row header">
+        
         <div class="navbar navbar-info navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <span class="navbar-brand" href="javascript:void(0)">OnePush</span>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://jugal.me/1push">OnePush</a>
                 </div>
-                <form class="navbar-form navbar-right">
-                    <div class="form-group">
-                        <input type="text" class="form-control col-md-8" ng-focus="startSearch()" ng-blur="stopSearch()" ng-model="query" placeholder="Search">
-                        <div class="btn-group-vertical auto-complete" ng-show="searching && query.length>0">
-                            <button type="button" class="btn btn-info" ng-repeat="website in websites|filter:{title:query}" ng-bind="website.title" ng-click="setQuery(website.title);stopSearch();"></button>
-                            <button type="button" class="btn btn-info" ng-repeat="website in websites|filter:{url_address:query}" ng-bind="website.url_address" ng-click="setQuery(website.url_address);stopSearch();"></button>
+                <div class="navbar-collapse collapse navbar-inverse-collapse">
+                    <form class="navbar-form navbar-right">
+                        <div class="form-group">
+                            <input type="text" class="form-control col-md-8" ng-focus="startSearch()" ng-blur="stopSearch()" ng-model="query" placeholder="Search">
+                            <div class="btn-group-vertical auto-complete  hidden-xs" ng-show="searching && query.length>0">
+                                <button type="button" class="btn btn-info" ng-repeat="website in websites|filter:{title:query}" ng-bind="website.title" ng-click="setQuery(website.title);stopSearch();"></button>
+                                <button type="button" class="btn btn-info" ng-repeat="website in websites|filter:{url_address:query}" ng-bind="website.url_address" ng-click="setQuery(website.url_address);stopSearch();"></button>
+                            </div>
                         </div>
-                    </div>
-                    <span class="nav-item" ng-show="query.length>0">
-                        <span class="clear-search nav-link" ng-click="query=''">x</span>
-                    </span>
-                </form>
-
-
-
+                        <span class="nav-item hidden-xs" ng-show="query.length>0">
+                            <span class="clear-search nav-link" ng-click="query=''">x</span>
+                        </span>
+                    </form>
+                </div>
             </div>
         </div>
         <div class="summary">
             <div class="alert alert-dismissible alert-success">
-                <button type="button" class="close" data-dismiss="alert"><i class="material-icons">close</i></button>
-                Showing <span ng-bind="filteredWebsites.length" class="badge"></span> of <span ng-bind="websites.length" class="badge"></span> websites
+                <div ng-show="loading">Loading...</div>
+                <div ng-hide="loading">
+                    <button type="button" class="close" data-dismiss="alert"><i class="material-icons">close</i></button>
+                    Showing <span ng-bind="filteredWebsites.length" class="badge"></span> of <span ng-bind="websites.length" class="badge"></span> websites
+                </div>
             </div>
-            
         </div>
-        <div ng-show="loading">Loading...</div>
+
+        
 
     </div>
     <div class="box-row content">
@@ -89,18 +97,18 @@
                             <input class="form-control" id="tag " ng-model="websiteToPush.tag" type="text" required="Please provide a tag" ng-requried="true" />
                         </div>
                     </form>
-                    <span ng-bind="message" ng-show="message.length>0"></span>
+                    <div class="alert alert-danger" ng-show="message.length>0" ng-bind="message">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" ng-click="pushWebsite()" ng-disabled="!pushForm.$valid">Push</button>
                 </div>
-                <button type="button" class="btn btn-default" data-content="This is a snackbar! Lorem lipsum dolor sit amet..." data-toggle="snackbar" data-timeout="0">Show snackbar</button>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <div class="box-row footer">
-        <button type="button" class="btn btn-info btn-fab push-website"
+        <button type="button" class="btn btn-info btn-fab btn-raised push-website"
                 data-toggle="modal"
                 data-target="#myModal">
             <i class="material-icons">add</i>

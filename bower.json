@@ -2,7 +2,7 @@
   "name": "one-push",
   "description": "One Push",
   "version": "1.0.0",
-  "homepage": "http://1push.jug.al",
+  "homepage": "http://jugal.me/1push",
   "license": "MIT",
   "private": true,
   "dependencies": {
@@ -10,6 +10,7 @@
     "angular-route": "~1.5.0",
     "angular-loader": "~1.5.0",
     "html5-boilerplate": "^5.3.0",
-    "bootstrap-material-design": "v4.0.2"
+    "bootstrap-material-design": "v0.5.10",
+    "underscore": "~1.8.3"
   }
 }

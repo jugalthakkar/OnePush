@@ -1,30 +1,112 @@
-<div>
-    <input class="form-control" ng-model="query" placeholder="Search..." />
-    <hr />
-    Showing <span ng-bind="filteredWebsites.length"></span> of <span ng-bind="websites.length"></span> websites
-    <hr />
-    <form name="pushForm">
-        <input class="form-control" ng-model="websiteToPush.title" placeholder="Title" type="text" required="Please provide a title" ng-requried="true" />
-        <input class="form-control" ng-model="websiteToPush.url" placeholder="URL" type="url" required="Please provide a valid url" ng-requried="true" />
-        <input class="form-control" ng-model="websiteToPush.tag" placeholder="Tag" type="text" required="Please provide a tag" ng-requried="true" />
-        <button type="button" ng-click="pushWebsite()" ng-disabled="!pushForm.$valid">Save</button>
-    </form>
-    <hr />
-    <span ng-bind="message"></span>
-    <hr />
-    <div ng-repeat="website in websites | filter:query as filteredWebsites" class="website">
-        <span class="title" ng-bind="website.title" />
-        <span class="image">
-            <img ng-src="{{website.favicon_image}}" />
-        </span>
-        <span class="url_address">
-            <a ng-bind="website.url_address" target="_blank" ng-href="{{website.url_address}}"></a>
-        </span>
-        <span class="like_box">
-            <span ng-show="website.liked===false" ng-click="like(website)">Like</span>
-            <span ng-show="website.liked===true" ng-click="unlike(website)">Unlike</span>
-        </span>
+<div class="box">
+    <div class="box-row header">
+        <div class="navbar navbar-info navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <span class="navbar-brand" href="javascript:void(0)">OnePush</span>
+                </div>
+                <form class="navbar-form navbar-right">
+                    <div class="form-group">
+                        <input type="text" class="form-control col-md-8" ng-focus="startSearch()" ng-blur="stopSearch()" ng-model="query" placeholder="Search">
+                        <div class="btn-group-vertical auto-complete" ng-show="searching && query.length>0">
+                            <button type="button" class="btn btn-info" ng-repeat="website in websites|filter:{title:query}" ng-bind="website.title" ng-click="setQuery(website.title);stopSearch();"></button>
+                            <button type="button" class="btn btn-info" ng-repeat="website in websites|filter:{url_address:query}" ng-bind="website.url_address" ng-click="setQuery(website.url_address);stopSearch();"></button>
+                        </div>
+                    </div>
+                    <span class="nav-item" ng-show="query.length>0">
+                        <span class="clear-search nav-link" ng-click="query=''">x</span>
+                    </span>
+                </form>
+
+
+
+            </div>
+        </div>
+        <div class="summary">
+            <div class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert"><i class="material-icons">close</i></button>
+                Showing <span ng-bind="filteredWebsites.length" class="badge"></span> of <span ng-bind="websites.length" class="badge"></span> websites
+            </div>
+            
+        </div>
+        <div ng-show="loading">Loading...</div>
+
     </div>
+    <div class="box-row content">
+        <div class="websites row">
+            <div ng-repeat="website in websites | filter:query as filteredWebsites" class="website col-md-4 col-sm-6">
+                <div class="wellx">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" ng-bind="website.title"></h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <div class="row-picture">
+                                        <img ng-src="{{website.favicon_image}}" ng-alt="{{website.title}}" class="circle">
+                                    </div>
+                                    <div class="row-content">
+                                        <h4 class="list-group-item-heading">
+                                            <a target="_blank" ng-href="{{website.url_address}}"><i class="material-icons">open_in_new</i> {{website.url_address}}</a>
+                                        </h4>
+                                        <span class="label label-info tag" ng-bind="website.tag"></span>
+                                        <span class="like_box">
+                                            <span ng-show="website.liked===false" ng-click="like(website)" class="btn btn-success"><i class="material-icons">thumb_up</i> Like</span>
+                                            <span ng-show="website.liked===true" ng-click="unlike(website)" class="btn btn-danger"><i class="material-icons">thumb_down</i> Unlike</span>
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Push A Website</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="pushForm">
+                        <div class="form-group label-floating">
+                            <label class="control-label" for="title">Website Title</label>
+                            <input class="form-control" id="title " ng-model="websiteToPush.title" type="text" required="Please provide a title" ng-requried="true" />
+                        </div>
+                        <div class="form-group label-floating">
+                            <label class="control-label" for="url">Website URL</label>
+                            <input class="form-control" id="url " ng-model="websiteToPush.url" type="url" required="Please provide a valid url" ng-requried="true" />
+                        </div>
+                        <div class="form-group label-floating">
+                            <label class="control-label" for="tag">Tag</label>
+                            <input class="form-control" id="tag " ng-model="websiteToPush.tag" type="text" required="Please provide a tag" ng-requried="true" />
+                        </div>
+                    </form>
+                    <span ng-bind="message" ng-show="message.length>0"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="pushWebsite()" ng-disabled="!pushForm.$valid">Push</button>
+                </div>
+                <button type="button" class="btn btn-default" data-content="This is a snackbar! Lorem lipsum dolor sit amet..." data-toggle="snackbar" data-timeout="0">Show snackbar</button>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <div class="box-row footer">
+        <button type="button" class="btn btn-info btn-fab push-website"
+                data-toggle="modal"
+                data-target="#myModal">
+            <i class="material-icons">add</i>
+        </button>
+    </div>
+
 </div>
 <!--
     <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay-md-down bmd-drawer-in-lg-up">
@@ -49,7 +131,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                
+
                         <div class="dropdown">
                             <button class="btn bmd-btn-icon btn-secondary dropdown-toggle" type="button" id="more-menu-1" data-toggle="dropdown" aria-haspopup="true">
                                 <i class="material-icons">more_vert</i>
@@ -87,9 +169,9 @@
                 </a>
             </ul>
         </div>
-   
+
         <main class="bmd-layout-content">
-            <div class="container">    
+            <div class="container">
                 <h2>Responsive drawer template</h2>
                 <p class="lead">This template provides a push style drawer for large screens, but an overlay style drawer for smaller screens.  For example, try viewing on an iPad in portrait vs. landscape.</p>
 
